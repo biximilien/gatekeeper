@@ -3,9 +3,9 @@ version: "3.5"
 services:
   gateway:
     image: openresty/openresty:stretch
-    command: bash -c "mkdir /logs && nginx -p / -c /nginx.conf -g \"daemon off;\""
+    #command: bash -c "mkdir /logs && nginx -p / -c /nginx.conf -g \"daemon off;\""
     volumes:
-      - ${PWD}/config/gateway/nginx.conf:/nginx.conf:ro
+      - ${PWD}/config/gateway/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
     links:
       - redis
       - db
@@ -16,13 +16,23 @@ services:
       - api02
       - api03
     ports:
-      - "8080:80"
+      - "8081:80"
 
   redis:
     image: redis
 
   db:
     image: postgres
+
+  grafana:
+    image: grafana/grafana
+    links:
+      - db
+    ports:
+      - "3000:3000"
+
+  broker:
+    image: rabbitmq:management
 
   web01:
     image: nginx
