@@ -1,0 +1,58 @@
+version: "3.5"
+
+services:
+  gateway:
+    image: openresty/openresty:stretch
+    command: bash -c "mkdir /logs && nginx -p / -c /nginx.conf -g \"daemon off;\""
+    volumes:
+      - ${PWD}/config/gateway/nginx.conf:/nginx.conf:ro
+    links:
+      - redis
+      - db
+      - web01
+      - web02
+      - web03
+      - api01
+      - api02
+      - api03
+    ports:
+      - "8080:80"
+
+  redis:
+    image: redis
+
+  db:
+    image: postgres
+
+  web01:
+    image: nginx
+    volumes:
+      - ${PWD}/www/apps/web:/usr/share/nginx/html:ro
+
+  web02:
+    image: nginx
+    volumes:
+      - ${PWD}/www/apps/web:/usr/share/nginx/html:ro
+
+  web03:
+    image: nginx
+    volumes:
+      - ${PWD}/www/apps/web:/usr/share/nginx/html:ro
+
+  api01:
+    image: golang
+    command: go run /src/github.com/jaswdr/template/main.go
+    volumes:
+      - ${PWD}/www/apps/api:/src/github.com/jaswdr/template:ro
+
+  api02:
+    image: golang
+    command: go run /src/github.com/jaswdr/template/main.go
+    volumes:
+      - ${PWD}/www/apps/api:/src/github.com/jaswdr/template:ro
+
+  api03:
+    image: golang
+    command: go run /src/github.com/jaswdr/template/main.go
+    volumes:
+      - ${PWD}/www/apps/api:/src/github.com/jaswdr/template:ro
