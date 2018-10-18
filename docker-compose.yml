@@ -2,12 +2,14 @@ version: "3.5"
 
 services:
   gateway:
-    image: openresty/openresty:stretch
-    #command: bash -c "mkdir /logs && nginx -p / -c /nginx.conf -g \"daemon off;\""
+    image: openresty/openresty:centos
     volumes:
       - ${PWD}/config/gateway/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ${PWD}/lua:/scripts:ro
+    depends_on:
+      - redis01
     links:
-      - redis
+      - redis01
       - db
       - web01
       - web02
@@ -18,7 +20,7 @@ services:
     ports:
       - "8081:80"
 
-  redis:
+  redis01:
     image: redis
 
   db:
