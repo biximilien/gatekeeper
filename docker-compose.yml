@@ -9,6 +9,7 @@ services:
     depends_on:
       - redis01
     links:
+      - grafana
       - redis01
       - db
       - web01
@@ -19,6 +20,7 @@ services:
       - api03
     ports:
       - "8081:80"
+      - "3000:3000"
 
   redis01:
     image: redis
@@ -28,10 +30,20 @@ services:
 
   grafana:
     image: grafana/grafana
+    environment:
+      - GF_DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - GF_DATABASE_SSL_MODE=disable
+      - GF_SESSION_PROVIDER=redis
+      - GF_SESSION_PROVIDER_CONFIG=addr=redis01:6379,pool_size=100,db=grafana
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_LOGIN_REMEMBER_DAYS=7
+      - GF_SECURITY_DISABLE_GRAVATAR=true
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_USERS_ALLOW_ORG_CREATE=false
     links:
       - db
-    ports:
-      - "3000:3000"
+      - redis01
 
   broker:
     image: rabbitmq:management
