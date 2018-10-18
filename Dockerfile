@@ -10,6 +10,7 @@ RUN cd /openresty \
         --with-http_gzip_static_module \
         --with-http_v2_module \
         --with-http_postgres_module \
+        --with-http_auth_request_module \
         -j8 \
     && make -j8 \
     && make install \
