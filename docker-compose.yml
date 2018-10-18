@@ -1,15 +1,14 @@
 version: "3.5"
 
 services:
-  gateway:
-    image: openresty/openresty:centos
+  gate:
+    build: .
     volumes:
-      - ${PWD}/config/gateway/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ${PWD}/config/gate/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ${PWD}/lua:/scripts:ro
     depends_on:
       - redis01
     links:
-      - grafana
       - redis01
       - db
       - web01
@@ -20,13 +19,15 @@ services:
       - api03
     ports:
       - "8081:80"
-      - "3000:3000"
+      - "9145:9145"
 
   redis01:
     image: redis
 
   db:
     image: postgres
+    volumes:
+      - ./database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
 
   grafana:
     image: grafana/grafana
@@ -42,8 +43,18 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_USERS_ALLOW_ORG_CREATE=false
     links:
+      - prometheus
       - db
       - redis01
+    ports:
+      - "3000:3000"
+
+  prometheus:
+    image: prom/prometheus
+    links:
+      - gate
+      - db
+
 
   broker:
     image: rabbitmq:management
