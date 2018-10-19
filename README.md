@@ -1,14 +1,12 @@
-# Template for new projects
+# Gatekeeper
+---
 
-### Roadmap
+### Features
 
- - Monitoring
-  - Dashboard with Grafana
-  - Storage with PostgreSQL and TimescaleDB
- - Docker integration to handle internals services
- - API Gateway
-  - Versioning
-  - Security
-  - Quota and Rate limiting
+ - Monitoring and Analytics with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)
+ - Database storage with [PostgreSQL](https://www.postgresql.org/) and [TimescaleDB](https://www.timescale.com/)
+ - Docker integration
+ - Security Authentication and Authorization
+ - Quota and Rate limiting
  - Cache with Redis
- - Circuit Break with RabbitMQ
+ - Circuit Break
