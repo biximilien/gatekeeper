@@ -35,6 +35,10 @@ services:
       - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     links:
       - gate
+      - exporter
+
+  exporter:
+    image: quay.io/prometheus/node-exporter
 
   grafana:
     image: grafana/grafana
