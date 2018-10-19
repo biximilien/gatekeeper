@@ -29,6 +29,13 @@ services:
     volumes:
       - ./database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
 
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    links:
+      - gate
+
   grafana:
     image: grafana/grafana
     environment:
@@ -48,13 +55,6 @@ services:
       - redis01
     ports:
       - "3000:3000"
-
-  prometheus:
-    image: prom/prometheus
-    links:
-      - gate
-      - db
-
 
   broker:
     image: rabbitmq:management
