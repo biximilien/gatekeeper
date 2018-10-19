@@ -1,5 +1,6 @@
 # Gatekeeper
----
+
+![Dashboard](./grafana.png)
 
 ### Features
 
