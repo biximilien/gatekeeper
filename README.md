@@ -1,4 +1,4 @@
-<img src="./logo.png" width="150px"/>
+<img src="./docs/logo.png" width="150px"/>
 
 [![Build Status][badge-travis-image]][badge-travis-url]
 

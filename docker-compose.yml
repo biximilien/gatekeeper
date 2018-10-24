@@ -43,7 +43,7 @@ services:
   grafana:
     image: grafana/grafana
     environment:
-      - GF_DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - GF_DATABASE_URL=postgres://postgres:postgres@db:5432/grafana?currentSchema=grafana
       - GF_DATABASE_SSL_MODE=disable
       - GF_SESSION_PROVIDER=redis
       - GF_SESSION_PROVIDER_CONFIG=addr=redis01:6379,pool_size=100,db=grafana
@@ -53,6 +53,9 @@ services:
       - GF_SECURITY_DISABLE_GRAVATAR=true
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_USERS_ALLOW_ORG_CREATE=false
+    depends_on:
+      - db
+      - redis01
     links:
       - prometheus
       - db
